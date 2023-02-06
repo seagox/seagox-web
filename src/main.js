@@ -14,13 +14,6 @@ Vue.prototype.$echarts = echarts
 import template from '@/utils/art-template'
 Vue.prototype.$template = template
 
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
-Vue.use(mavonEditor)
-
-import uploader from 'vue-simple-uploader'
-Vue.use(uploader)
-
 import { BigNumber } from 'bignumber.js'
 Vue.prototype.$BigNumber = BigNumber
 

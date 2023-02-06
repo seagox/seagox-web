@@ -12,14 +12,6 @@
                 <i class="el-icon-house"></i>
                 <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="platform" v-permission="'platformApplication'">
-                <i class="el-icon-monitor"></i>
-                <span slot="title">平台配置</span>
-            </el-menu-item>
-            <el-menu-item index="sys" v-permission="'sysApplication'">
-                <i class="el-icon-setting"></i>
-                <span slot="title">系统配置</span>
-            </el-menu-item>
             <sidebar-menu :data="menuList" />
         </el-menu>
     </div>
