@@ -926,16 +926,15 @@ export default {
                 that.loading = false
                 if (res.data.code == 200) {
                     this.todoList = res.data.data
-                    if (this.todoDoneList.length === 0){
-                        if (this.todoList.length !== 0){
-                            for(let i=0;i<this.todoList.length;i++) {
-                                this.todoDoneList.push(this.todoList[i])
-                            }
+                    this.todoDoneList = []
+                    if (this.todoList.length !== 0){
+                        for(let i=0;i<this.todoList.length;i++) {
+                            this.todoDoneList.push(this.todoList[i])
                         }
-                        if (this.historyJson.length !== 0){
-                            for(let j=0;j<this.historyJson.length;j++) {
-                                this.todoDoneList.push(this.historyJson[j])
-                            }
+                    }
+                    if (this.historyJson.length !== 0){
+                        for(let j=0;j<this.historyJson.length;j++) {
+                            this.todoDoneList.push(this.historyJson[j])
                         }
                     }
                 } else {
