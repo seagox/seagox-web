@@ -110,11 +110,7 @@ export default {
             return menuArray
         },
         selectMenu(index) {
-            if (index.indexOf('runCode') != -1) {
-                this.$router.push('/' + index + '&time=' + new Date().getTime())
-            } else {
-                this.$router.push('/' + index)
-            }
+            this.$router.push('/' + index)
         }
     }
 }
