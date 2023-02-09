@@ -13,14 +13,7 @@ export default {
 				'/',
 				'/login',
 				'/home',
-				'/excel',
-				'/flowDesigner',
-				'/flowDisplay',
-				'/simplifyDesign',
-				'/seniorDesign',
-				'/printDesign',
-				'/gaugeSetting',
-				'/doorSetting'
+				'/flowDisplay'
 			]
 		}
 	},
