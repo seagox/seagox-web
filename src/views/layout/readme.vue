@@ -21,7 +21,6 @@ export default {
 	data() {
 		return {
 			color: '',
-			colorInterval: undefined,
 			id: Math.random()
 				.toString(36)
 				.slice(-6),
@@ -37,25 +36,21 @@ export default {
 	},
 	mounted() {
 		this.queryAnalysis()
-		this.colorInterval = setInterval(() => {
-			let type = 'red'
-			let color = localStorage.getItem('color')
-			switch (color) {
-				case '#DA001C':
-					type = 'red'
-					break
-				case '#0574d5':
-					type = 'blue'
-					break
-			}
-			this.color = type
-		}, 500)
-		
+		let type = 'red'
+		let color = localStorage.getItem('color')
+		switch (color) {
+			case '#DA001C':
+				type = 'red'
+				break
+			case '#0574d5':
+				type = 'blue'
+				break
+		}
+		this.color = type
 		this.destroyCode()
 	},
 	beforeDestroy() {
 		this.destroyCode()
-		clearInterval(this.colorInterval)
 	},
 	methods: {
 		async queryAnalysis() {

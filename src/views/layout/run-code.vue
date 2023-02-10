@@ -16,10 +16,11 @@ export default {
 		}
 	},
 	mounted() {
+		this.destroyCode()
 		this.queryTable()
 	},
-	deactivated() {
-		//this.destroyCode()
+	beforeDestroy() {
+		this.destroyCode()
 	},
 	methods: {
 		async queryTable() {
