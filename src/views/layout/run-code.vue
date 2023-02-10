@@ -8,9 +8,7 @@ export default {
 	name: 'runCode',
 	data() {
 		return {
-			id: Math.random()
-				.toString(36)
-				.slice(-6),
+			id: 'jelly-' + Math.random().toString(36).slice(-6),
 			html: '',
 			js: '',
 			css: '',
@@ -18,10 +16,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.destroyCode()
 		this.queryTable()
 	},
-	beforeDestroy() {
+	deactivated() {
 		this.destroyCode()
 	},
 	methods: {
@@ -76,7 +73,7 @@ export default {
 		destroyCode() {
 			const $target = document.getElementById(this.id)
 			if ($target) $target.parentNode.removeChild($target)
-
+			
 			if (this.component) {
 				this.$refs.display.removeChild(this.component.$el)
 				this.component.$destroy()

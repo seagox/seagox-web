@@ -221,6 +221,15 @@ const routes = [
                     keepAlive: true,
                     title: '我发起的'
                 }
+            },
+            {
+                name: 'test',
+                path: '/test',
+                component: () => import('@/views/layout/test'),
+                meta: {
+                    keepAlive: true,
+                    title: '测试页面'
+                }
             }
         ]
     }
@@ -228,7 +237,6 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
-    //base: 'yat-web',
     routes
 })
 

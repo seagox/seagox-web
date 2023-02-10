@@ -147,23 +147,23 @@
                                     type="text"
                                     size="small"
                                     @click="showEditDialog(scope.row)"
-                                    v-if="scope.row.account != 'fjctAdmin'"
+                                    v-if="scope.row.account != 'superAdmin'"
                                     >编辑</el-button
                                 >
-                                <el-divider direction="vertical" v-if="scope.row.account != 'fjctAdmin'"></el-divider>
+                                <el-divider direction="vertical" v-if="scope.row.account != 'superAdmin'"></el-divider>
                                 <el-button
                                     type="text"
                                     size="small"
                                     @click="deleteSubmit(scope.row)"
-                                    v-if="scope.row.account != 'fjctAdmin'"
+                                    v-if="scope.row.account != 'superAdmin'"
                                     >删除</el-button
                                 >
-                                <el-divider direction="vertical" v-if="scope.row.account != 'fjctAdmin'"></el-divider>
+                                <el-divider direction="vertical" v-if="scope.row.account != 'superAdmin'"></el-divider>
                                 <el-button
                                     type="text"
                                     size="small"
                                     @click="showResetDialog(scope.row)"
-                                    v-if="scope.row.account != 'fjctAdmin'"
+                                    v-if="scope.row.account != 'superAdmin'"
                                     >重置密码</el-button
                                 >
                             </template>
