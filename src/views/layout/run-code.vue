@@ -19,7 +19,7 @@ export default {
 		this.queryTable()
 	},
 	deactivated() {
-		this.destroyCode()
+		//this.destroyCode()
 	},
 	methods: {
 		async queryTable() {
