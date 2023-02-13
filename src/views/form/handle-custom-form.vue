@@ -61,20 +61,6 @@
 		</div>
 		<div class="footer">
 			<div class="footer-right">
-				<el-dropdown
-					@command="handleRelateSearch($event)"
-					v-if="relateSearchData"
-					trigger="click"
-					style="margin-left:10px; margin-right: 10px"
-				>
-					<el-button type="primary"> <i class="el-icon-document"></i> 联查 </el-button>
-					<el-dropdown-menu slot="dropdown">
-						<template v-for="(item, index) in relateSearchData">
-							<el-dropdown-item :command="item" :key="index">{{ item.title }}</el-dropdown-item>
-						</template>
-					</el-dropdown-menu>
-				</el-dropdown>
-
 				<!--提交-->
 				<el-button
 					type="primary"
@@ -301,7 +287,6 @@ export default {
 			approvalVisible: false,
 			flowStatus: 0,
 			temporaryStorage: false,
-			relateSearchData: [],
 			formDesignType: 0,
 			formCofig: {},
 			approveOptionalVisible: false,
@@ -354,7 +339,6 @@ export default {
 			let res = await this.$axios.get('jellyForm/queryDetail', { params })
 			this.loading = false
 			if (res.data.code == 200) {
-				this.relateSearchData = JSON.parse(res.data.data.form.relateSearchJson)
 				this.temporaryStorage = res.data.data.temporaryStorage || false
 				this.historyJson = JSON.parse(res.data.data.form.historyJson)
                 this.getFlowLog()
@@ -543,45 +527,6 @@ export default {
 				} else {
 					that.$message.error(res.data.message)
 				}
-			})
-		},
-		//联查
-		handleRelateSearch(command) {
-			let query = {
-				title: command.title,
-				time: Date.now()
-			}
-			for (let i = 0; i < command.query.length; i++) {
-				let item = command.query[i]
-				let pattern = /\#\{(.*?)\}/g
-				var matches = item.target.match(pattern)
-				if (matches) {
-					for (let i = 0; i < matches.length; i++) {
-						let matche = matches[i]
-						let field = matche.substring(2, matche.length - 1)
-						item.target = item.target.replace(matche, this.form[field])
-					}
-				}
-				query[item.source] = item.target
-			}
-			let search = {}
-			for (let i = 0; i < command.search.length; i++) {
-				let item = command.search[i]
-				let pattern = /\#\{(.*?)\}/g
-				var matches = item.target.match(pattern)
-				if (matches) {
-					for (let i = 0; i < matches.length; i++) {
-						let matche = matches[i]
-						let field = matche.substring(2, matche.length - 1)
-						item.target = item.target.replace(matche, this.form[field])
-					}
-				}
-				search[item.source] = item.target
-			}
-			query.search = search
-			this.$router.push({
-				path: command.path,
-				query: query
 			})
 		},
 		approveOptionalSubmit() {
