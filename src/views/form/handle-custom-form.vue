@@ -157,13 +157,7 @@
 						<span class="el-dropdown-link">
 							审批意见
 						</span>
-						<el-dropdown-menu slot="dropdown">
-							<el-dropdown-item :command="item" v-for="(item, index) in commonWords" :key="index">{{
-								index + 1 + '、' + item
-							}}</el-dropdown-item>
-						</el-dropdown-menu>
 					</el-dropdown>
-					<i class="el-icon-setting" style="margin-left:10px" @click="showCommonWordsDialog"></i>
 					<el-input type="textarea" :rows="10" placeholder="请输入处理意见" v-model="handleForm.comment">
 					</el-input>
 				</el-form-item>
@@ -246,65 +240,6 @@
 				<el-button type="primary" @click="handleRevoke">提交</el-button>
 			</div>
 		</el-dialog>
-		<!--审批意见列表-->
-		<el-dialog title="审批意见" width="500px" :visible.sync="commonWordsVisible" :close-on-click-modal="false">
-			<el-row style="margin-bottom:10px">
-				<el-button @click="showCommonWordsAddDialog" size="small">新增</el-button>
-			</el-row>
-			<el-table :data="commonWordsData" style="width: 100%">
-				<el-table-column type="index" label="#" width="50" align="center"></el-table-column>
-				<el-table-column prop="name" label="名称" align="center"></el-table-column>
-				<el-table-column label="操作" align="center">
-					<template slot-scope="scope">
-						<el-button type="text" size="small" @click="showCommonWordsEditDialog(scope.row)"
-							>编辑</el-button
-						>
-						<el-button type="text" size="small" @click="deleteCommonWordsSubmit(scope.row)">删除</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-			<div slot="footer" class="dialog-footer"></div>
-		</el-dialog>
-		<!--新增审批意见-->
-		<el-dialog title="新增" width="500px" :visible.sync="addCommonWordsVisible" :close-on-click-modal="false">
-			<el-form :model="addCommonWordsForm" label-width="60px" :rules="formRules" ref="addCommonWordsForm">
-				<el-form-item label="名称" prop="name">
-					<el-input
-						v-model="addCommonWordsForm.name"
-						type="textarea"
-						:rows="5"
-						:maxlength="50"
-						show-word-limit
-						clearable
-						placeholder="请输入名称"
-					></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click="addCommonWordsVisible = false">取消</el-button>
-				<el-button type="primary" @click="addCommonWordsSubmit">提交</el-button>
-			</div>
-		</el-dialog>
-		<!--编辑审批意见-->
-		<el-dialog title="编辑" width="500px" :visible.sync="editCommonWordsVisible" :close-on-click-modal="false">
-			<el-form :model="editCommonWordsForm" label-width="60px" :rules="formRules" ref="editCommonWordsForm">
-				<el-form-item label="名称" prop="name">
-					<el-input
-						v-model="editCommonWordsForm.name"
-						type="textarea"
-						:rows="5"
-						:maxlength="50"
-						show-word-limit
-						clearable
-						placeholder="请输入名称"
-					></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click="editCommonWordsVisible = false">取消</el-button>
-				<el-button type="primary" @click="editCommonWordsSubmit">提交</el-button>
-			</div>
-		</el-dialog>
 		<!--警告-->
 		<el-dialog class="warn-dialog" title="警告" width="500px" :visible.sync="warnVisible" :close-on-click-modal="false" :modal-append-to-body="false">
 			<div slot="title" class="header-title">
@@ -382,21 +317,6 @@ export default {
 				reason: [{ required: true, message: '请输入理由', trigger: 'blur' }],
 				name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
 			},
-			commonWords: [
-				'同意',
-				'交相关部门处理',
-				'拟同意',
-				'按单位相关规章制度办理',
-				'保留意见',
-				'同意，按规定办理',
-				'按流程办理'
-			],
-			addCommonWordsVisible: false,
-			addCommonWordsForm: { name: '' },
-			editCommonWordsVisible: false,
-			editCommonWordsForm: { name: '' },
-			commonWordsVisible: false,
-			commonWordsData: [],
 			textModel: { flag: false, type: 'text' },
 			loading: false,
 			disableButtonFlag: {
@@ -419,7 +339,6 @@ export default {
 	},
 	activated() {
 		this.reportDetail()
-		this.queryCommonWordsAll()
 	},
 	created() {
 		// 将vue实例的方法绑定到window对象中去
@@ -799,86 +718,6 @@ export default {
 				}
 			})
 		},
-		async queryCommonWordsAll() {
-			let res = await this.$axios.get('commonWords/queryAll')
-			if (res.data.code == 200) {
-				this.commonWordsData = res.data.data
-				let commonWords = []
-				for (let i = 0; i < this.commonWordsData.length; i++) {
-					commonWords.push(this.commonWordsData[i].name)
-				}
-				commonWords.push('同意')
-				commonWords.push('交相关部门处理')
-				commonWords.push('按单位相关规章制度办理')
-				commonWords.push('保留意见')
-				commonWords.push('同意，按规定办理')
-				commonWords.push('按流程办理')
-				this.commonWords = commonWords
-			}
-		},
-		showCommonWordsDialog() {
-			this.queryCommonWordsAll()
-			this.commonWordsVisible = true
-		},
-		showCommonWordsAddDialog() {
-			this.addCommonWordsVisible = true
-			if (this.$refs.addCommonWordsForm) {
-				this.$refs.addCommonWordsForm.resetFields()
-			}
-		},
-		addCommonWordsSubmit() {
-			let that = this
-			this.$refs.addCommonWordsForm.validate(valid => {
-				if (valid) {
-					that.$axios.post('commonWords/insert', that.addCommonWordsForm).then(res => {
-						if (res.data.code == 200) {
-							that.$message.success('新增成功')
-							that.addCommonWordsVisible = false
-							that.queryCommonWordsAll()
-						} else {
-							that.$message.error(res.data.message)
-						}
-					})
-				}
-			})
-		},
-		showCommonWordsEditDialog(row) {
-			this.editCommonWordsForm = Object.assign({}, row)
-			this.editCommonWordsVisible = true
-			if (this.$refs.editCommonWordsForm) {
-				this.$refs.editCommonWordsForm.resetFields()
-			}
-		},
-		editCommonWordsSubmit() {
-			let that = this
-			this.$refs.editCommonWordsForm.validate(valid => {
-				if (valid) {
-					that.$axios.post('commonWords/update', that.editCommonWordsForm).then(res => {
-						if (res.data.code == 200) {
-							that.$message.success('修改成功')
-							that.editCommonWordsVisible = false
-							that.queryCommonWordsAll()
-						} else {
-							that.$message.error(res.data.message)
-						}
-					})
-				}
-			})
-		},
-		deleteCommonWordsSubmit(row) {
-			let that = this
-			this.$confirm('亲，确认要删除吗？', '提示', { type: 'warning' }).then(() => {
-				that.$axios.post('commonWords/delete/' + row.id, {}).then(res => {
-					if (res.data.code == 200) {
-						that.$message.success('删除成功')
-						that.queryCommonWordsAll()
-					} else {
-						that.$message.error(res.data.message)
-					}
-				})
-			})
-		},
-
 		handleWarnSubmit() {
 			let that = this
 			var params = that.warnParams
