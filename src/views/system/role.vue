@@ -39,6 +39,7 @@
 					<el-tree
 						:data="menuData"
 						show-checkbox
+						default-expand-all
 						node-key="id"
 						ref="tree"
 						style="margin-top:15px"
@@ -64,6 +65,7 @@
 					<el-tree
 						:data="menuData"
 						show-checkbox
+						default-expand-all
 						node-key="id"
 						ref="tree"
 						style="margin-top:15px"
