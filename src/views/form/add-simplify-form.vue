@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import simplifyForm from '@/views/simplify/simplify-form'
+import simplifyForm from '@/views/form/simplify-form'
 export default {
 	components: {
 		simplifyForm

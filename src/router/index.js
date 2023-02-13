@@ -29,38 +29,6 @@ const routes = [
         component: () => import('@/views/layout/login')
     },
     {
-        path: '/simplifyDesign',
-        name: 'simplifyDesign',
-        component: () => import('@/views/simplify/simplify-design'),
-        meta: {
-            title: '表单设计'
-        }
-    },
-    {
-        path: '/seniorDesign',
-        name: 'seniorDesign',
-        component: () => import('@/views/senior/senior-design'),
-        meta: {
-            title: '表单设计'
-        }
-    },
-    {
-        path: '/printDesign',
-        name: 'printDesign',
-        component: () => import('@/views/print/print-design'),
-        meta: {
-            title: '打印模版'
-        }
-    },
-    {
-        path: '/flowDesigner',
-        name: 'flowDesigner',
-        component: () => import('@/views/flow/flow-designer'),
-        meta: {
-            title: '流程设计'
-        }
-    },
-    {
         path: '/flowDisplay',
         name: 'flowDisplay',
         component: () => import('@/views/flow/flow-display'),

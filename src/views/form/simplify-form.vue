@@ -932,7 +932,7 @@ import excelMember from '@/views/components/form/member'
 import excelMultipleMember from '@/views/components/form/multiple-member'
 import editor from '@/views/components/quill/editor'
 import { Image } from 'element-ui'
-import simplifyBusiness from '@/views/simplify/simplify-business'
+import simplifyBusiness from '@/views/form/simplify-business'
 import md5 from 'md5'
 import { handleFormula } from '@/utils/formula.js'
 export default {

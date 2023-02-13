@@ -333,8 +333,8 @@
 </template>
 
 <script>
-import seniorForm from '@/views/senior/senior-form'
-import simplifyForm from '@/views/simplify/simplify-form'
+import seniorForm from '@/views/form/senior-form'
+import simplifyForm from '@/views/form/simplify-form'
 import printForm from '@/views/print/print-form'
 import print from '@/plugins/print.js'
 export default {

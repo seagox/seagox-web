@@ -114,8 +114,8 @@
 </template>
 
 <script>
-import seniorForm from '@/views/senior/senior-form'
-import simplifyForm from '@/views/simplify/simplify-form'
+import seniorForm from '@/views/form/senior-form'
+import simplifyForm from '@/views/form/simplify-form'
 export default {
 	components: {
 		seniorForm,
