@@ -45,7 +45,6 @@ export default {
 	data() {
 		return {
 			action: this.$axios.defaults.baseURL + 'upload/putObject/oss',
-			tableData: [],
 			form: {},
 			calculate: {},
 			multiple: {},
@@ -68,13 +67,9 @@ export default {
 			let res = await this.$axios.get('jellyForm/queryDetail', { params })
 			if (res.data.code == 200) {
 				this.form = res.data.data
-
-				this.tableData = []
-				for (let i = 0; i < this.form.form.formDesignList.length; i++) {
-					let formDesign = this.form.form.formDesignList[i]
-					this.formDesignType = formDesign.type
-					this.formCofig = JSON.parse(formDesign.excelJson)
-				}
+				let formDesign = this.form.form.formDesign
+				this.formDesignType = formDesign.type
+				this.formCofig = JSON.parse(formDesign.excelJson)
 
 				Object.keys(this.form).forEach((field, index) => {
 					if (this.formDesignType === 1 && field.indexOf('.') > -1) {

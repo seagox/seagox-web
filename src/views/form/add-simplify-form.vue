@@ -48,11 +48,9 @@ export default {
 		async queryByMark(formId) {
 			const res = await this.$axios.get('jellyForm/queryByMark/' + formId)
 			if (res.data.code == 200) {
-				for (let i = 0; i < res.data.data.formDesignList.length; i++) {
-					let formDesign = res.data.data.formDesignList[i]
-					this.formCofig = JSON.parse(formDesign.excelJson)
-					this.formVisible = true
-				}
+				let formDesign = res.data.data.formDesign
+				this.formCofig = JSON.parse(formDesign.excelJson)
+				this.formVisible = true
 			}
 		},
 		handleClose() {

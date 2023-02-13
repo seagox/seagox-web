@@ -56,10 +56,8 @@ export default {
 			if (res.data.code == 200) {
 				this.formModel = res.data.data
 
-				for (let i = 0; i < this.formModel.form.formDesignList.length; i++) {
-					let formDesign = this.formModel.form.formDesignList[i]
-					this.formCofig = JSON.parse(formDesign.excelJson)
-				}
+				let formDesign = this.formModel.form.formDesign
+				this.formCofig = JSON.parse(formDesign.excelJson)
 
 				Object.keys(this.formModel).forEach((field, index) => {
 					if (field.indexOf('.') > -1) {

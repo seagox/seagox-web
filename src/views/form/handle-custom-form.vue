@@ -475,11 +475,10 @@ export default {
 				}
 
 				this.tableData = []
-				for (let i = 0; i < this.form.form.formDesignList.length; i++) {
-					let formDesign = this.form.form.formDesignList[i]
-					this.formDesignType = formDesign.type
-					this.formCofig = JSON.parse(formDesign.excelJson)
-				}
+				
+				let formDesign = this.form.form.formDesign
+				this.formDesignType = formDesign.type
+				this.formCofig = JSON.parse(formDesign.excelJson)
 				if (this.form.form.printJson) {
 					this.printJson = JSON.parse(this.form.form.printJson)
 				}

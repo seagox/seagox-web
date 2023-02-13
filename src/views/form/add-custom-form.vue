@@ -168,11 +168,9 @@ export default {
 					this.flowFlag = 1
 				}
 				this.disableButtonFlag = res.data.data.disableButtonFlag
-				for (let i = 0; i < res.data.data.formDesignList.length; i++) {
-					let formDesign = res.data.data.formDesignList[i]
-					this.formDesignType = formDesign.type
-					this.formCofig = JSON.parse(formDesign.excelJson)
-				}
+				let formDesign = res.data.data.formDesign
+				this.formDesignType = formDesign.type
+				this.formCofig = JSON.parse(formDesign.excelJson)
 			}
 		},
 		handleApproveOptionalChange(val) {
