@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="toolView">
-			<el-button type="text" icon="el-icon-plus" @click="showAddDialog" size="small" v-if="addFlag">新增</el-button>
-			<el-button type="text" icon="el-icon-download" @click="handleExport" size="small" v-if="exportFlag">导出</el-button>
+			<el-button type="text" icon="el-icon-plus" @click="showAddDialog" size="small">新增</el-button>
+			<el-button type="text" icon="el-icon-download" @click="handleExport" size="small">导出</el-button>
 			<el-button type="text" icon="el-icon-lock" @click="openCloseDialog" size="small" v-if="closeFlag">关闭</el-button>
 			<el-button type="text" icon="el-icon-key" @click="openSubmit" size="small" v-if="openFlag">激活</el-button>
 		</div>
@@ -135,16 +135,16 @@
 					:element="item"
 					:regions="regions"
 				/>
-				<el-table-column label="操作" align="center" fixed="right" v-if="editFlag || deleteFlag">
+				<el-table-column label="操作" align="center" fixed="right">
 					<template slot-scope="scope">
-						<el-tooltip content="编辑" placement="top-start" v-if="editFlag">
+						<el-tooltip content="编辑" placement="top-start">
 							<i
 								class="el-icon-edit"
 								@click="showEditDialog(scope.row)"
 								style="font-size:14px;margin-right:10px"
 							></i>
 						</el-tooltip>
-						<el-tooltip content="删除" placement="top-start" v-if="deleteFlag">
+						<el-tooltip content="删除" placement="top-start">
 							<i
 								class="el-icon-delete"
 								@click="deleteSubmit(scope.row)"
@@ -232,12 +232,8 @@ export default {
 	},
 	data() {
 		return {
-			addFlag: false,
-			exportFlag: false,
 			closeFlag: false,
 			openFlag: false,
-			editFlag: false,
-			deleteFlag: false,
 			flowFlag: false,
 			generateType: 'dialog',
 			searchJsonList: [],
@@ -381,10 +377,6 @@ export default {
 			}
 			let res = await this.$axios.post('jellyForm/queryListById', params)
 			if (res.data.code == 200) {
-				this.addFlag = res.data.data.addFlag
-				this.editFlag = res.data.data.editFlag
-				this.deleteFlag = res.data.data.deleteFlag
-				this.exportFlag = res.data.data.exportFlag
 				this.closeFlag = res.data.data.closeFlag
 				this.openFlag = res.data.data.openFlag
 				this.flowFlag = res.data.data.flowFlag
@@ -406,14 +398,15 @@ export default {
 						}
 					}
 				}
-				this.tableHeaderList = res.data.data.tableHeaderJson
-				let tableHeaderConfig = JSON.parse(JSON.stringify(res.data.data.tableHeaderJson))
-				for (let i = 0; i < tableHeaderConfig.length; i++) {
-					if (!tableHeaderConfig[i].display) {
-						tableHeaderConfig[i].display = 1
-					}
-				}
-				this.tableHeaderConfig = tableHeaderConfig
+				this.tableHeaderList = JSON.parse(res.data.data.tableHeader)
+				// let tableHeaderConfig = JSON.parse(JSON.stringify(res.data.data.tableHeaderJson))
+				// for (let i = 0; i < tableHeaderConfig.length; i++) {
+				// 	if (!tableHeaderConfig[i].display) {
+				// 		tableHeaderConfig[i].display = 1
+				// 	}
+				// }
+				// this.tableHeaderConfig = tableHeaderConfig
+				this.tableHeaderConfig = this.tableHeaderList
 				this.tableData = res.data.data.tableData.list
 				this.total = res.data.data.tableData.total
 
