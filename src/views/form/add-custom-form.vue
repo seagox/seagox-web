@@ -46,14 +46,12 @@
 					icon="el-icon-document"
 					@click="saveForm"
 					v-if="flowFlag === 1"
-					:disabled="disableButtonFlag.temp"
 					>暂存</el-button
 				>
 				<el-button
 					type="primary"
 					icon="el-icon-document-checked"
 					@click="submitForm"
-					:disabled="disableButtonFlag.submit"
 					>提交</el-button
 				>
 			</div>
@@ -141,17 +139,7 @@ export default {
 			flowOptionalList: [],
 			flowOptionalSelection: [],
 			textModel: { flag: false, type: 'text' },
-			loading: false,
-			disableButtonFlag: {
-				temp: false,
-				submit: false,
-				audit: false,
-				seaView: false,
-				abandon: false,
-				backFront: false,
-				backStart: false,
-				delete: false
-			}
+			loading: false
 		}
 	},
 	created() {
@@ -167,7 +155,6 @@ export default {
 				if (res.data.data.hasOwnProperty('flowId') && res.data.data.flowId != null) {
 					this.flowFlag = 1
 				}
-				this.disableButtonFlag = res.data.data.disableButtonFlag
 				let formDesign = res.data.data.formDesign
 				this.formDesignType = formDesign.type
 				this.formCofig = JSON.parse(formDesign.excelJson)
@@ -432,7 +419,7 @@ export default {
 </script>
 <style scoped>
 .container {
-	padding: 5px 0px 45px 5px;
+	padding: 5px 5px 45px 5px;
 }
 .footer {
 	position: fixed;
