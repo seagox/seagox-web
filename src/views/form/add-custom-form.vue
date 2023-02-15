@@ -419,7 +419,7 @@ export default {
 </script>
 <style scoped>
 .container {
-	padding: 5px 5px 45px 5px;
+	padding: 10px 5px 45px 5px;
 }
 .footer {
 	position: fixed;
