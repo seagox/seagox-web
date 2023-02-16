@@ -511,7 +511,7 @@ export default {
 		},
 		//打印
 		handlePrint() {
-			print.printPage('print', 'auto')
+			window.open(window.platform.url + 'upload/print/' + this.form.form.detailExportPath)
 		},
 		//删除
 		handleDelete() {
