@@ -202,10 +202,6 @@
 				<el-button type="primary" @click="flowOptionalSubmit">提交</el-button>
 			</div>
 		</el-dialog>
-		<!--打印-->
-		<div id="print" style="display:none;" v-if="form.form && form.form.detailExportPath">
-			<print-form :formModel="form" :formCofig="printJson" :property="property" />
-		</div>
 		<!--撤回-->
 		<el-dialog title="撤回" width="500px" :visible.sync="revokeVisible" :close-on-click-modal="false">
 			<el-form :model="revokeForm" label-width="60px" :rules="formRules" ref="revokeForm">
@@ -256,13 +252,10 @@
 <script>
 import seniorForm from '@/views/form/senior-form'
 import simplifyForm from '@/views/form/simplify-form'
-import printForm from '@/views/print/print-form'
-import print from '@/plugins/print.js'
 export default {
 	components: {
 		seniorForm,
 		simplifyForm,
-		printForm
 	},
 	data() {
 		return {
@@ -295,7 +288,6 @@ export default {
 			flowOptionalVisible: false,
 			flowOptionalList: [],
 			flowOptionalSelection: [],
-			printJson: {},
 			revokeVisible: false,
 			revokeForm: { reason: '' },
 			formRules: {
@@ -382,9 +374,6 @@ export default {
 				let formDesign = this.form.form.formDesign
 				this.formDesignType = formDesign.type
 				this.formCofig = JSON.parse(formDesign.excelJson)
-				if (this.form.form.printJson) {
-					this.printJson = JSON.parse(this.form.form.printJson)
-				}
 
 				Object.keys(this.form).forEach((field, index) => {
 					if (this.formDesignType === 1 && field.indexOf('.') > -1) {
