@@ -392,7 +392,7 @@ export default {
                         localStorage.setItem('permissions', 'no')
                     }
                     localStorage.setItem('departmentId', res.data.data.departmentId)
-
+                    that.$store.commit('closeAll')
                     that.$router.go(0)
                 } else {
                     that.$message.error(res.data.message)
