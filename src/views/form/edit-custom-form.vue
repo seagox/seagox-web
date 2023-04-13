@@ -1,7 +1,6 @@
 <template>
 	<div class="container">
-		<!--简化版-->
-		<div v-if="formDesignType === 1">
+		<div>
 			<simplify-form
 				ref="simplifyForm"
 				:action="action"
@@ -10,19 +9,6 @@
 				:property="property"
 				:calculate="calculate"
 				:textModel="textModel"
-				:disabledField="disabledField"
-			/>
-		</div>
-		<!--高级版-->
-		<div v-if="formDesignType === 2">
-			<senior-form
-				ref="seniorForm"
-				:action="action"
-				:formModel="form"
-				:formCofig="formCofig"
-				:property="property"
-				:calculate="calculate"
-				:multiple="multiple"
 				:disabledField="disabledField"
 			/>
 		</div>
@@ -35,11 +21,9 @@
 </template>
 
 <script>
-import seniorForm from '@/views/form/senior-form'
 import simplifyForm from '@/views/form/simplify-form'
 export default {
 	components: {
-		seniorForm,
 		simplifyForm
 	},
 	data() {

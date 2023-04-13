@@ -713,14 +713,14 @@ export default {
 				this.$set(this.searchJsonList, i, item)
 			}
 		},
-    // 强制更新
-    changeMessage() {
-      this.$forceUpdate()
-    },
-		//处理新增、编辑表单提交
-		handleSimplifyForm() {
-			this.queryById(1)
+		// 强制更新
+		changeMessage() {
+		this.$forceUpdate()
+		},
+			//处理新增、编辑表单提交
+			handleSimplifyForm() {
+				this.queryById(1)
+			}
 		}
-	}
 }
 </script>

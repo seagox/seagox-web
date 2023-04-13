@@ -1,8 +1,7 @@
 <template>
 	<div class="container" v-loading="loading">
 		<div :style="{ width: approvalVisible ? 'calc(100% - 324px)' : '100%' }">
-			<!--简化版-->
-			<div v-if="formDesignType === 1">
+			<div>
 				<simplify-form
 					ref="simplifyForm"
 					:action="action"
@@ -14,21 +13,6 @@
 					:editable="editable"
 					:hidden="hidden"
 					:textModel="textModel"
-				/>
-			</div>
-			<!--高级版-->
-			<div v-if="formDesignType === 2">
-				<senior-form
-					ref="seniorForm"
-					:action="action"
-					:formModel="form"
-					:formCofig="formCofig"
-					:property="property"
-					:calculate="calculate"
-					:multiple="multiple"
-					:disabled="disabled"
-					:editable="editable"
-					:hidden="hidden"
 				/>
 			</div>
 			<el-card style="margin-bottom:20px;" v-if="flowFlag === 1">
@@ -250,11 +234,9 @@
 </template>
 
 <script>
-import seniorForm from '@/views/form/senior-form'
 import simplifyForm from '@/views/form/simplify-form'
 export default {
 	components: {
-		seniorForm,
 		simplifyForm,
 	},
 	data() {

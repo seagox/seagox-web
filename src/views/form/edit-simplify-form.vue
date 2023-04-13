@@ -55,29 +55,7 @@ export default {
 			let res = await this.$axios.get('jellyForm/queryDetail', { params })
 			if (res.data.code == 200) {
 				this.formModel = res.data.data
-
-				let formDesign = this.formModel.form.formDesign
-				this.formCofig = JSON.parse(formDesign.excelJson)
-
-				Object.keys(this.formModel).forEach((field, index) => {
-					if (field.indexOf('.') > -1) {
-						this.$set(
-							this.formModel,
-							field.split('.')[0] + '|' + field.split('.')[1],
-							this.formModel[field]
-						)
-						delete this.formModel[field]
-					}
-				})
-				for (let j = 0; j < this.formCofig.fieldOptions.length; j++) {
-					if (this.formCofig.fieldOptions[j].type === 'editor') {
-						this.$set(
-							this.formModel,
-							this.formCofig.fieldOptions[j].field,
-							JSON.parse(this.formModel[this.formCofig.fieldOptions[j].field])
-						)
-					}
-				}
+				this.formCofig = JSON.parse(this.formModel.designJson)
 				this.formVisible = true
 			}
 		},
