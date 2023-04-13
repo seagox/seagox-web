@@ -274,5 +274,4 @@ router.beforeEach((to, from, next) => {
     }
 })
 
-Vue.prototype.$history = router
 export default router
