@@ -4,6 +4,7 @@
 
 <script>
 import Vue from 'vue'
+import router from '@/router'
 export default {
 	name: 'runCode',
 	data() {
@@ -57,6 +58,16 @@ export default {
 				const parseStrToFunc = new Function(this.js)()
 				parseStrToFunc.template = this.html
 
+				parseStrToFunc.props = {
+					cache: {
+						type: Object,
+						default: () => {
+							return this.$parent.$refs[this.$route.fullPath].$vnode.parent.componentInstance.cache
+						}
+					}
+				}
+				parseStrToFunc.router = router
+
 				const Component = Vue.extend(parseStrToFunc)
 				this.component = new Component().$mount()
 
@@ -74,7 +85,7 @@ export default {
 		destroyCode() {
 			const $target = document.getElementById(this.id)
 			if ($target) $target.parentNode.removeChild($target)
-			
+
 			if (this.component) {
 				this.$refs.display.removeChild(this.component.$el)
 				this.component.$destroy()
