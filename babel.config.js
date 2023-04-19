@@ -1,11 +1,10 @@
 module.exports = {
     presets: [
-        [
-            '@vue/app',
-            {
-                useBuiltIns: 'entry'
-            }
-        ]
+        '@vue/cli-plugin-babel/preset',
+        ['@babel/preset-env', {
+            useBuiltIns: 'entry',
+            "corejs": "3"
+        }]
     ],
     plugins: [
         [
