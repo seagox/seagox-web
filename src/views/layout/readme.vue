@@ -37,16 +37,17 @@ export default {
 	mounted() {
 		this.queryAnalysis()
 		let type = 'red'
-		let color = localStorage.getItem('color')
-		switch (color) {
-			case '#DA001C':
-				type = 'red'
-				break
-			case '#0574d5':
-				type = 'blue'
-				break
-		}
-		this.color = type
+			let color = localStorage.getItem('color')
+			switch (color) {
+				case '#DA001C':
+					type = 'red'
+					break
+				case '#0574d5':
+					type = 'blue'
+					break
+			}
+			this.color = type
+		
 		this.destroyCode()
 	},
 	beforeDestroy() {
@@ -205,6 +206,7 @@ export default {
 						} else {
 							item.color = '#FF9F00'
 						}
+                        item.icon = item.icon.replace(new RegExp('fill="#000000"', "gm"), 'fill="#fff"')
 						options.push(item)
 					}
 				}
