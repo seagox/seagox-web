@@ -22,7 +22,9 @@ export default {
 			config: {
 				layout: []
 			},
-			queryData: {}
+			queryData: {},
+			javascript: '',
+			jsApi: {}
 		}
 	},
 	mounted() {
@@ -82,13 +84,77 @@ export default {
 			}
 			return r
 		},
+		resolveScript() {
+			let result = {}
+			let reg = /([\w ]*)(\([\w ,]*\))([\s\S]*\{)([\s\S]*)(\})/
+			let splitArray = this.javascript.split('export function')
+			for(let i=0;i<splitArray.length;i++) {
+				if(splitArray[i]) {
+					let execResult = reg.exec(splitArray[i])
+					let params = []
+					let paramsSlit = execResult[2].substring(1, execResult[2].length-1).split(',')
+					for(let j=0;j<paramsSlit.length;j++) {
+						if(paramsSlit[j]) {
+							params.push(paramsSlit[j].trim())
+						}
+					}
+					result[execResult[1].trim()] = {
+						params: params,
+						body: execResult[4]
+					}
+				}
+			}
+			this.jsApi = result
+		},
+		addFunc(name, params, body) {
+			this[name] = function() {
+				let func = null
+				if(params.length === 0) {
+					func = new Function(body).bind(this)
+				} else if (params.length === 1) {
+					func = new Function(params[0], body).bind(this)
+				} else if (params.length === 2) {
+					func = new Function(params[0], params[1], body).bind(this)
+				} else if (params.length === 3) {
+					func = new Function(params[0], params[1], params[2], body).bind(this)
+				} else if (params.length === 4) {
+					func = new Function(params[0], params[1], params[2], params[3], body).bind(this)
+				} else if (params.length === 5) {
+					func = new Function(params[0], params[1], params[2], params[3], params[4], body).bind(this)
+				}
+				let argLength = arguments.length
+				if(argLength === 0) {
+					func()
+				} else if (argLength === 1) {
+					func(arguments[0])
+				} else if (argLength === 2) {
+					func(arguments[0], arguments[1])
+				} else if (argLength === 3) {
+					func(arguments[0], arguments[1], arguments[2])
+				} else if (argLength === 4) {
+					func(arguments[0], arguments[1], arguments[2], arguments[3])
+				} else if (argLength === 5) {
+					func(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4])
+				}
+			}
+		},
+		execMounted() {
+			if(this.jsApi.hasOwnProperty('mounted')) {
+				this.mounted()
+			}
+		},
 		async queryById() {
 			let res = await this.$axios.get('gauge/queryById/' + this.$route.query.id)
 			if (res.data.code == 200) {
-				if (res.data.data) {
-					this.config = res.data.data
+				this.javascript = res.data.data.script
+				this.resolveScript()
+				for (let key in this.jsApi) {
+					this.addFunc(key, this.jsApi[key].params, this.jsApi[key].body)
+				}
+				this.execMounted()
+				if (res.data.data.config) {
+					this.config = JSON.parse(res.data.data.config)
 					this.recursionAttribute(this.config.layout)
-					this.queryExecute()
 				}
 			}
 		},
@@ -177,25 +243,6 @@ export default {
 					}
 				}
 				this.$set(object, 'options', options)
-			}
-		},
-		queryExecute(id) {
-			if (this.config.queries) {
-				for (let i = 0; i < this.config.queries.length; i++) {
-					let query = this.config.queries[i]
-					if (query.type === 'ds' && query.script) {
-						let params = {
-							id: this.$route.query.id,
-							name: query.name
-						}
-						this.$axios.post('gauge/execute', params).then(res => {
-							if (res.data.code == 200) {
-								this.$set(this.queryData, query.name, res.data)
-								this.recursionData(this.config.layout, query.name)
-							}
-						})
-					}
-				}
 			}
 		},
 		recursionData(layout, appointName) {
@@ -534,18 +581,8 @@ export default {
 				if(type === 'rowDblclick') {
 					this[params.i].selectedRow = row
 				}
-				for (let i = 0; i < this.config.queries.length; i++) {
-					let query = this.config.queries[i]
-					if (query.name === params[type]) {
-						try {
-							let func = new Function('that', 'params', query.script)
-							func(this, params)
-						} catch (e) {
-							this.$message.error('js脚本错误：' + e)
-						}
-						break
-					}
-				}
+				let func = new Function('params', 'this.' + params[type] + '()').bind(this)
+				func(params)
 			}
 		}
 	}
