@@ -215,6 +215,24 @@ export default {
 					this.queryReadyItem(item)
 				} else if (item.type === 'quick') {
 					this.queryQuickAccess(item)
+				} else if (item.type === 'chart') {
+					if(item.dataSourceType === 'dataModel') {
+						let params = {
+							tableName: item.dataModel,
+							dimension: item.dimension ? item.dimension.toString() :  '',
+							metrics: item.metrics.toString(),
+							filterData: item.filterData ? item.filterData.toString() : ''
+						}
+						this.$axios.post('gauge/chartSql', params).then(res => {
+							if (res.data.code == 200) {
+								item.data = res.data.data
+								this.reloadChart(item)
+							}
+						})
+					}
+					if (item.children) {
+						this.recursionAttribute(item.children)
+					}
 				} else {
 					if (item.children) {
 						this.recursionAttribute(item.children)
