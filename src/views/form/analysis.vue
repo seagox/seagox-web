@@ -181,6 +181,52 @@ export default {
 					this.queryReadyItem(item)
 				} else if (item.type === 'quick') {
 					this.queryQuickAccess(item)
+				} else if (item.type === 'chart') {
+					if(item.dataSourceType === 'dataModel') {
+						this.$nextTick(() => {
+							var filterDataSql = ''
+							for(let i=0;i<item.filterData.length;i++) {
+								let filterDataItem = item.filterData[i]
+								if(filterDataItem['field'] && filterDataItem['value']) {
+									let field = filterDataItem['field'].split('|')[0]
+									let type = filterDataItem['field'].split('|')[1]
+									if(i != 0) {
+										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
+									}
+									filterDataSql = filterDataSql + field + filterDataItem['decider']
+									if(filterDataItem['type'] == 'variable') {
+										if(type === 'varchar') {
+											filterDataSql = filterDataSql + "'" + filterDataItem['value'] + "'"
+										} else {
+											filterDataSql = filterDataSql + filterDataItem['value']
+										}
+										
+									} else if(filterDataItem['type'] == 'expression') {
+										if(type === 'varchar') {
+											filterDataSql = filterDataSql + "'" + eval(filterDataItem['value']) + "'"
+										} else {
+											filterDataSql = filterDataSql + eval(filterDataItem['value'])
+										}
+									}
+								}
+							}
+							let params = {
+								tableName: item.dataModel,
+								dimension: item.dimension ? item.dimension.toString() :  '',
+								metrics: item.metrics.toString(),
+								filterData: filterDataSql
+							}
+							this.$axios.post('gauge/chartSql', params).then(res => {
+								if (res.data.code == 200) {
+									item.data = res.data.data
+									this.reloadChart(item)
+								}
+							})
+						})
+					}
+					if (item.children) {
+						this.recursionAttribute(item.children)
+					}
 				} else {
 					if (item.children) {
 						this.recursionAttribute(item.children)
