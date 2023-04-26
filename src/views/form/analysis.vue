@@ -151,15 +151,15 @@ export default {
 			let res = await this.$axios.get('gauge/queryById/' + this.$route.query.id)
 			if (res.data.code == 200) {
 				this.javascript = res.data.data.script
+				if (res.data.data.config) {
+					this.config = JSON.parse(res.data.data.config)
+					this.recursionAttribute(this.config.layout)
+				}
 				this.resolveScript()
 				for (let key in this.jsApi) {
 					this.addFunc(key, this.jsApi[key].params, this.jsApi[key].body)
 				}
 				this.execMounted()
-				if (res.data.data.config) {
-					this.config = JSON.parse(res.data.data.config)
-					this.recursionAttribute(this.config.layout)
-				}
 			}
 		},
 		recursionAttribute(layout) {
@@ -193,14 +193,17 @@ export default {
 									if(i != 0) {
 										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
 									}
-									filterDataSql = filterDataSql + field + filterDataItem['decider']
+									filterDataSql = filterDataSql + field + ' ' +filterDataItem['decider'] + ' '
 									if(filterDataItem['type'] == 'variable') {
-										if(type === 'varchar') {
-											filterDataSql = filterDataSql + "'" + filterDataItem['value'] + "'"
+										if(filterDataItem['decider'] === 'in') {
+											filterDataSql = filterDataSql + '(' + filterDataItem['value'] + ')' + ' '
 										} else {
-											filterDataSql = filterDataSql + filterDataItem['value']
+											if(type === 'varchar') {
+												filterDataSql = filterDataSql + "'" + filterDataItem['value'] + "'"
+											} else {
+												filterDataSql = filterDataSql + filterDataItem['value']
+											}
 										}
-										
 									} else if(filterDataItem['type'] == 'expression') {
 										if(type === 'varchar') {
 											filterDataSql = filterDataSql + "'" + eval(filterDataItem['value']) + "'"
@@ -208,6 +211,12 @@ export default {
 											filterDataSql = filterDataSql + eval(filterDataItem['value'])
 										}
 									}
+								} else if (filterDataItem['field'] && filterDataItem['decider'] === ' is not null') {
+									let field = filterDataItem['field'].split('|')[0]
+									if(i != 0) {
+										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
+									}
+									filterDataSql = filterDataSql + field + filterDataItem['decider']
 								}
 							}
 							let params = {
