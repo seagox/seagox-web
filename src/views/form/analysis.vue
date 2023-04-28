@@ -242,11 +242,21 @@ export default {
 					if (item.children) {
 						this.recursionAttribute(item.children)
 					}
+				} else if (item.type === 'radio' || item.type === 'checkbox' || item.type === 'select') {
+					if(item.dataModel) {
+						this.queryDicDetail(item)
+					}
 				} else {
 					if (item.children) {
 						this.recursionAttribute(item.children)
 					}
 				}
+			}
+		},
+		async queryDicDetail(item) {
+			let res = await this.$axios.get('dictionaryDetail/queryDisplay?classifyId=' + item.dataModel)
+			if (res.data.code === 200) {
+				item.data = res.data.data
 			}
 		},
 		async queryTodoItem(object) {
