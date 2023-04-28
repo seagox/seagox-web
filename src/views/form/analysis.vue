@@ -187,7 +187,19 @@ export default {
 							var filterDataSql = ''
 							for(let i=0;i<item.filterData.length;i++) {
 								let filterDataItem = item.filterData[i]
-								if(filterDataItem['field'] && filterDataItem['value']) {
+								if (filterDataItem['field'] && filterDataItem['decider'] === ' is not null') {
+									let field = filterDataItem['field'].split('|')[0]
+									if(i != 0) {
+										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
+									}
+									filterDataSql = filterDataSql + field + filterDataItem['decider']
+								} else if (filterDataItem['field'] && filterDataItem['decider'] === 'length') {
+									let field = filterDataItem['field'].split('|')[0]
+									if(i != 0) {
+										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
+									}
+									filterDataSql = filterDataSql + filterDataItem['decider'] + '(' + field + ')=' + filterDataItem['value']
+								} else if(filterDataItem['field'] && filterDataItem['value']) {
 									let field = filterDataItem['field'].split('|')[0]
 									let type = filterDataItem['field'].split('|')[1]
 									if(i != 0) {
@@ -211,12 +223,6 @@ export default {
 											filterDataSql = filterDataSql + eval(filterDataItem['value'])
 										}
 									}
-								} else if (filterDataItem['field'] && filterDataItem['decider'] === ' is not null') {
-									let field = filterDataItem['field'].split('|')[0]
-									if(i != 0) {
-										filterDataSql = filterDataSql + ' ' + filterDataItem['condition'] + ' '
-									}
-									filterDataSql = filterDataSql + field + filterDataItem['decider']
 								}
 							}
 							let params = {

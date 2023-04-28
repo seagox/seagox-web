@@ -205,10 +205,10 @@
 						clearable
 					>
 						<el-option
-							v-for="option in item.options"
-							:key="option.value"
-							:label="option.label"
-							:value="option.value"
+							v-for="option in item.data"
+							:key="option.code"
+							:label="option.name"
+							:value="option.code"
 						>
 						</el-option>
 					</el-select>
@@ -430,11 +430,11 @@
 				>
 					<el-radio-group v-model="item.value" @change="handleEvent('change', item)">
 						<el-radio
-							v-for="option in item.options"
-							:key="option.value"
-							:label="option.value"
+							v-for="option in item.data"
+							:key="option.code"
+							:label="option.code"
 						>
-						{{option.label}}
+						{{option.name}}
 						</el-radio>
 					</el-radio-group>
 				</div>
@@ -466,9 +466,9 @@
 				>
 					<el-checkbox-group v-model="item.value" @change="handleEvent('change', item)">
 						<el-checkbox
-							v-for="option in item.options"
-							:key="option.value"
-							:label="option.value"
+							v-for="option in item.data"
+							:key="option.code"
+							:label="option.code"
 						>
 						{{option.label}}
 						</el-checkbox>
@@ -672,7 +672,7 @@
 				<el-table
 					stripe
 					border
-					:data="item.tableData"
+					:data="item.data"
 					style="width: 100%"
 					:height="item.showPagination ? item.h * 18 - 86 : item.h * 18 - 26"
 					:show-header="item.showHeader"
@@ -859,7 +859,7 @@
 												background: option.color
 											}"
 										>
-											<i :class="option.icon" style="color: #fff; font-size: 17px"></i>
+											<i v-html="option.icon" style="color: #fff; font-size: 17px"></i>
 										</div>
 										<div style="margin-top: 10px;">{{ option.quick_name ? option.quick_name : option.name }}</div>
 									</div>
