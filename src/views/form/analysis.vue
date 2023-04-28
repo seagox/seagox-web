@@ -242,7 +242,7 @@ export default {
 					if (item.children) {
 						this.recursionAttribute(item.children)
 					}
-				} else if (item.type === 'radio' || item.type === 'checkbox' || item.type === 'select') {
+				} else if (item.type === 'radio' || item.type === 'checkbox' || item.type === 'select' || item.type === 'multiSelect') {
 					if(item.dataModel) {
 						this.queryDicDetail(item)
 					}
@@ -256,7 +256,14 @@ export default {
 		async queryDicDetail(item) {
 			let res = await this.$axios.get('dictionaryDetail/queryDisplay?classifyId=' + item.dataModel)
 			if (res.data.code === 200) {
-				item.data = res.data.data
+				let result = []
+				for(let i=0;i<res.data.data.length;i++) {
+					result.push({
+						label: res.data.data[i].name,
+						value: res.data.data[i].code
+					})
+				}
+				item.data = result
 			}
 		},
 		async queryTodoItem(object) {
