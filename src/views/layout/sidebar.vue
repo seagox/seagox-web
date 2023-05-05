@@ -85,7 +85,7 @@ export default {
             let menuList = JSON.parse(JSON.stringify(data))
             let menuArray = []
             menuList.forEach(item => {
-                item.icon = item.icon.replace(new RegExp('fill="#000000"', "gm"), 'fill="#fff"')
+                item.replaceicon = item.icon.replace(new RegExp('fill="#000000"', 'gm'), 'fill="#fff"')
                 if (item.type === 1) {
                     item.url = 'formList?id=' + item.path + '&title=' + item.name
                 } else if (item.type === 3) {

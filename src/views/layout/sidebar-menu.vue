@@ -3,7 +3,10 @@
         <div class="el-menu-custom" v-for="(item, index) in data" :key="index">
             <el-submenu :index="item.url" v-if="item.children" :class="isCollapse && item.level == 0 ? 'is-Close' : ''">
                 <template slot="title">
-                    <i v-html="item.icon" style="margin-right:10px;width:24px;text-align:center;"></i>
+                    <i
+                        v-html="!isCollapse || item.level == 0 ? item.replaceicon : item.icon"
+                        style="margin-right:10px;width:24px;text-align:center;"
+                    ></i>
                     <span slot="title">{{ item.name }}</span>
                 </template>
                 <template>
@@ -11,10 +14,13 @@
                 </template>
             </el-submenu>
             <el-menu-item :index="item.url" v-else>
-                <i v-html="item.icon" style="margin-right:10px;width:24px;text-align:center;"></i>
+                <i
+                    v-html="!isCollapse || item.level == 0 ? item.replaceicon : item.icon"
+                    style="margin-right:10px;width:24px;text-align:center;"
+                ></i>
                 <span slot="title" class="line">
-                        {{ item.name }}
-                    </span>
+                    {{ item.name }}
+                </span>
             </el-menu-item>
         </div>
     </div>
