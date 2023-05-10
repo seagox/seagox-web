@@ -182,7 +182,7 @@ export default {
 				} else if (item.type === 'quick') {
 					this.queryQuickAccess(item)
 				} else if (item.type === 'chart') {
-					if(item.dataSourceType === 'dataModel') {
+					if(item.dataSourceType === 'dataModel' || item.dataSourceType === 'view') {
 						this.$nextTick(() => {
 							var filterDataSql = ''
 							for(let i=0;i<item.filterData.length;i++) {
