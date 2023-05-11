@@ -628,18 +628,8 @@ export default {
 				if(type === 'rowDblclick') {
 					this[params.i].selectedRow = row
 				}
-				for (let i = 0; i < this.config.queries.length; i++) {
-					let query = this.config.queries[i]
-					if (query.name === params[type]) {
-						try {
-							let func = new Function('that', 'params', query.script)
-							func(this, params)
-						} catch (e) {
-							this.$message.error('js脚本错误：' + e)
-						}
-						break
-					}
-				}
+				let func = new Function('params', 'this.' + params[type] + '()').bind(this)
+				func(params)
 			} else {
 				if(type === 'rowDblclick' && params.type === 'work') {
 					this.$router.push({
