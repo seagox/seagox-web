@@ -124,15 +124,15 @@ export default {
 				if (res.data.data) {
 					if(res.data.data.type === 1) {
 						this.javascript = res.data.data.data.script
+						if (res.data.data.data.config) {
+							this.config = JSON.parse(res.data.data.data.config)
+							this.recursionAttribute(this.config.layout)
+						}
 						this.resolveScript()
 						for (let key in this.jsApi) {
 							this.addFunc(key, this.jsApi[key].params, this.jsApi[key].body)
 						}
 						this.execMounted()
-						if (res.data.data.data.config) {
-							this.config = JSON.parse(res.data.data.data.config)
-							this.recursionAttribute(this.config.layout)
-						}
 					} else if (res.data.data.type === 2) {
 						this.html = res.data.data.data.html
 						this.js = res.data.data.data.js
