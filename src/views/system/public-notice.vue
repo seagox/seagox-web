@@ -5,16 +5,6 @@
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title"></el-input>
                 </el-form-item>
-                <el-form-item v-if="typeOptions.length > 0" label="类型" prop="classify">
-                    <el-select v-model="form.classify" placeholder="请选择">
-                        <el-option
-                            v-for="item in typeOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
                 <el-form-item label="发送范围" prop="toUserIds">
                     <div class="inside-input">
                         <el-select v-model="form.toUserIds" placeholder="请选择发送范围" clearable multiple filterable>
@@ -26,18 +16,6 @@
                             ></el-option>
                         </el-select>
                         <i class="el-icon-document-copy iconE" @click="handleMemberDialog"></i>
-                    </div>
-                </el-form-item>
-                <el-form-item v-if="relationOptions.length > 0" label="关联" prop="relation">
-                    <div class="inside-input">
-                        <el-select v-model="form.relation" placeholder="请选择需要关联的通知" clearable multiple filterable>
-                            <el-option
-                                v-for="item in relationOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
                     </div>
                 </el-form-item>
                 <el-form-item>
@@ -95,9 +73,7 @@ export default {
                 title: '',
                 toUserIds: [],
                 content: {},
-                resources: [],
-                classify: '1',
-                relation: []
+                resources: []
             },
             rules: {
                 title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
@@ -181,10 +157,6 @@ export default {
                     this.form.resources = JSON.parse(res.data.data.resources)
                     this.fileList = JSON.parse(res.data.data.resources)
                     this.form.toUserIds = res.data.data.toUserIds.split(',')
-                    this.form.classify = res.data.data.classify
-                    if (res.data.data.relation){
-                        this.form.relation = res.data.data.relation.split(',')
-                    }
                 }
             })
         },
@@ -199,9 +171,7 @@ export default {
                 toUserIds: this.form.toUserIds.toString(),
                 content: JSON.stringify(this.form.content),
                 resources: JSON.stringify(this.form.resources),
-                status: flag,
-                classify: this.form.classify,
-                relation: this.form.relation.toString()
+                status: flag
             }
             this.$refs.form.validate(valid => {
                 if (valid) {

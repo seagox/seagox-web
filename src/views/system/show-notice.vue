@@ -24,15 +24,6 @@
                         </el-table-column>
                     </el-table>
                 </el-form-item>
-                <el-form-item v-if="relationList.length > 0" label="关联">
-                    <el-table :data="relationList">
-                        <el-table-column prop="title" label="标题" align="center">
-                            <template slot-scope="scope">
-                                <el-link @click="pageJump(scope.row)">{{ scope.row.title }}</el-link>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-form-item>
             </el-form>
         </el-main>
     </div>
@@ -48,8 +39,7 @@ export default {
         return {
             title: '',
             content: {},
-            resources: [],
-            relationList: []
+            resources: []
         }
     },
     created() {
@@ -66,9 +56,6 @@ export default {
                         this.$refs.editor.setContents(this.content)
                     }
                     this.resources = JSON.parse(res.data.data.resources)
-                    if (res.data.data.relationList){
-                        this.relationList = res.data.data.relationList
-                    }
                 }
             })
         },
